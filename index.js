@@ -193,15 +193,38 @@ function handleCustomElement (containerElem, customElement, prefix, cb) {
 
   const json = JSON.stringify(program, null, 2);
   // console.log(json);
-  const ta = document.createElement('textarea');
-  ta.setAttribute('cols', 150);
-  ta.setAttribute('rows', 23);
-  ta.textContent = json;
-  document.body.append(ta);
 
   const code = escodegen.generate(program, {
     // Need for `raw`
     // parse: true
   });
   console.log('code', code);
+
+  const cols = 70;
+  const rows = 20;
+
+  const taHTML = document.createElement('textarea');
+  taHTML.setAttribute('cols', cols);
+  taHTML.setAttribute('rows', rows);
+  taHTML.textContent = document.querySelector('j-program').outerHTML;
+  document.body.append(taHTML);
+
+  const ta = document.createElement('textarea');
+  ta.setAttribute('cols', cols);
+  ta.setAttribute('rows', rows);
+  ta.textContent = json;
+  document.body.append(ta);
+
+  const taCode = document.createElement('textarea');
+  taCode.setAttribute('cols', cols);
+  taCode.setAttribute('rows', rows);
+  taCode.textContent = code;
+  document.body.append(taCode);
+
+  const evalButton = document.createElement('button');
+  evalButton.textContent = 'Eval()';
+  evalButton.addEventListener('click', () => {
+    eval(code);
+  });
+  document.body.append(evalButton);
 })();
