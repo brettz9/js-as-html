@@ -106,7 +106,7 @@ function handleCustomElement (containerElem, customElement, prefix, cb) {
 
 export async function setup ({
   visitorKeys = './node_modules/eslint-visitor-keys/lib/visitor-keys.json',
-  container,
+  container = document.body,
   autoDefine = true
 } = {}) {
   if (typeof visitorKeys === 'string') {
@@ -182,7 +182,7 @@ export async function setup ({
           const {allowableAttributes, json} = map.get(key);
           if (allowableAttributes.includes(attName)) {
             childAST[attName] = json?.includes(attName) ? JSON.parse(value) : value;
-            console.log('attribute', key, attName);
+            log('attribute', key, attName);
           }
         }
       });
@@ -211,7 +211,7 @@ export async function setup ({
     getAST () {
       const program = astForJElement(container, 'program');
       const ast = program[0].Program;
-      console.log('ast', ast);
+      log('ast', ast);
       this.ast = ast;
 
       return ast;
@@ -229,7 +229,7 @@ export async function setup ({
         // Need for `raw`
         // parse: true
       });
-      console.log('code', code);
+      log('code', code);
 
       return code;
     }

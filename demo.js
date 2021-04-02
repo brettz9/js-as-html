@@ -1,10 +1,7 @@
 import * as jsAsHTML from './index.js';
 
 (async () => {
-  const container = document.querySelector('body');
-  const {json, code} = await (await jsAsHTML.setup({
-    container
-  })).get();
+  const {json, code} = (await jsAsHTML.setup()).get();
 
   const cols = 70;
   const rows = 20;
