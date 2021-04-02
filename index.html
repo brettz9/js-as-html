@@ -1,0 +1,59 @@
+ <!DOCTYPE html>
+ <html lang="en" dir="ltr">
+   <head>
+     <meta charset="utf-8">
+     <title>JS in HTML</title>
+     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
+     <script type="module" src="index.js"></script>
+   </head>
+   <body>
+
+     <!-- (AST-inspired) JS-in-HTML -->
+     <j-program>
+       <jk-body>
+         <j-if-statement>
+           <jk-test>
+             <j-binary-expression operator="%">
+               <jk-left>
+                 <j-call-expression>
+                   <jk-callee>
+                     <j-member-expression>
+                       <jk-object>
+                         <j-identifier name="Date"></j-identifier>
+                       </jk-object>
+                       <jk-property>
+                         <j-identifier name="now"></j-identifier>
+                       </jk-property>
+                     </j-member-expression>
+                   </jk-callee>
+                 </j-call-expression>
+               </jk-left>
+               <jk-right>
+                 <j-literal value="2"></j-literal>
+               </jk-right>
+             </j-binary-expression>
+           </jk-test>
+           <jk-consequent>
+             <j-block-statement>
+               <jk-body>
+                 <j-expression-statement>
+                   <jk-expression>
+                     <j-call-expression>
+                       <jk-callee>
+                         <j-identifier name="alert"></j-identifier>
+                       </jk-callee>
+                       <jk-arguments>
+                         <j-literal value="hello"></j-literal>
+                       </jk-arguments>
+                     </j-call-expression>
+                   </jk-expression>
+                 </j-expression-statement>
+               </jk-body>
+             </j-block-statement>
+           </jk-consequent>
+         </j-if-statement>
+       </jk-body>
+     </j-program>
+
+   </body>
+ </html>
