@@ -1,5 +1,8 @@
 import escodegen from './vendor/escodegen.js';
 
+const VISITOR_KEY_PREFIX = 'j';
+const AST_PROPERTY_PREFIX = 'jk';
+
 let DEBUG = 0;
 export function debug (val) {
   DEBUG = val;
@@ -28,41 +31,6 @@ export function defineElements (visitorKeys) {
     ...new Set(Object.values(visitorKeys).flat())
   ].sort();
 
-/*
-      <j-test>
-        <j-binary-expression operator="%">
-          <j-left>
-            <j-call-expression>
-              <j-callee>
-                <j-member-expression>
-                  <j-object_>
-                    <j-identifier name="Date"></j-identifier>
-                  </j-object_>
-                  <j-property>
-                    <j-identifier name="now"></j-identifier>
-                  </j-property>
-                </j-member-expression>
-              </j-callee>
-            </j-call-expression>
-          </j-left>
-          <j-right>
-            <j-literal value="2"></j-literal>
-          </j-right>
-        </j-binary-expression>
-      </j-test>
-      <j-consequent>
-        <j-block-statement>
-          <j-body_>
-            <j-expression-statement>
-              <j-expression>
-                <j-call-expression>
-                  <j-callee>
-                    <j-identifier name="alert"></j-identifier>
-                  </j-callee>
-                  <j-arguments>
-                    <j-literal
-                    */
-
   function define (els, prefix) {
     els.forEach((el) => {
       // Can't reuse across elements
@@ -77,12 +45,12 @@ export function defineElements (visitorKeys) {
   log(Object.keys(visitorKeys));
   log(elementNamesForKeys);
 
-  define(elementNames, 'j');
-  define(elementNamesForKeys, 'jk');
+  define(elementNames, VISITOR_KEY_PREFIX);
+  define(elementNamesForKeys, AST_PROPERTY_PREFIX);
 }
 
 function getKeyForElement (tag, prefix) {
-  const initialCaps = prefix === 'j';
+  const initialCaps = prefix === VISITOR_KEY_PREFIX;
   return camelize(
     tag.localName.slice(prefix.length + 1), initialCaps
   ).replace(/-/g, '');
@@ -117,12 +85,12 @@ export async function setup ({
   const elementNames = Object.keys(visitorKeys);
 
   function handleJKElement (ast, containerElem, key) {
-    handleCustomElement(containerElem, key, 'jk', (tag) => {
+    handleCustomElement(containerElem, key, AST_PROPERTY_PREFIX, (tag) => {
       log('type', tag, key);
 
       const elemNames = [...tag.children].map((child) => {
-        log('ee', elementNames, getKeyForElement(child, 'j'));
-        return getKeyForElement(child, 'j');
+        log('ee', elementNames, getKeyForElement(child, VISITOR_KEY_PREFIX));
+        return getKeyForElement(child, VISITOR_KEY_PREFIX);
       }).filter((locaName) => {
         return elementNames.includes(locaName);
       }).map((localName) => {
@@ -157,7 +125,7 @@ export async function setup ({
   }
 
   function astForJElement (containerElem, jElement) {
-    return handleCustomElement(containerElem, jElement, 'j', (tag, type) => {
+    return handleCustomElement(containerElem, jElement, VISITOR_KEY_PREFIX, (tag, type) => {
       const childAST = {
         type
       };
@@ -168,7 +136,7 @@ export async function setup ({
         handleJKElement(childAST, tag, key);
       });
 
-      const key = getKeyForElement(tag, 'j');
+      const key = getKeyForElement(tag, VISITOR_KEY_PREFIX);
 
       // Todo: Specify or detect type, e.g., to parse as float?
       const map = new Map([
@@ -219,7 +187,7 @@ export async function setup ({
     getJSON () {
       const ast = this.ast || this.getAST();
       const json = JSON.stringify(ast, null, 2);
-      // console.log(json);
+      log('json', json);
 
       return json;
     },
