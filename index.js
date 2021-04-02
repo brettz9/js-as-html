@@ -1,6 +1,9 @@
 import escodegen from './vendor/escodegen.js';
 
-const DEBUG = 0;
+let DEBUG = 0;
+export function debug (val) {
+  DEBUG = val;
+}
 
 function log (...args) {
   if (DEBUG) {
@@ -18,7 +21,7 @@ function decamelize (str) {
   return str.replace(/(?<!^)[A-Z]/g, '-$&').toLowerCase();
 }
 
-function defineElements (visitorKeys) {
+export function defineElements (visitorKeys) {
   // espree.VisitorKeys
   const elementNames = Object.keys(visitorKeys);
   const elementNamesForKeys = [
@@ -101,11 +104,16 @@ function handleCustomElement (containerElem, customElement, prefix, cb) {
   });
 }
 
-(async () => {
-  const req = await fetch(
-    './node_modules/eslint-visitor-keys/lib/visitor-keys.json'
-  );
-  const visitorKeys = await req.json();
+export async function setup ({
+  visitorKeys = './node_modules/eslint-visitor-keys/lib/visitor-keys.json',
+  container,
+  autoDefine = true
+} = {}) {
+  if (typeof visitorKeys === 'string') {
+    const req = await fetch(visitorKeys);
+    visitorKeys = await req.json();
+  }
+
   const elementNames = Object.keys(visitorKeys);
 
   function handleJKElement (ast, containerElem, key) {
@@ -185,46 +193,45 @@ function handleCustomElement (containerElem, customElement, prefix, cb) {
     });
   }
 
-  defineElements(visitorKeys);
+  if (autoDefine) {
+    defineElements(visitorKeys);
+  }
 
-  const ast = astForJElement(document.querySelector('body'), 'program');
-  const program = ast[0].Program;
-  console.log('ast', program);
+  return {
+    evaluate () {
+      (0, eval)(this.getCode());
+    },
+    get () {
+      return {
+        ast: this.ast,
+        json: this.getJSON(),
+        code: this.getCode()
+      };
+    },
+    getAST () {
+      const program = astForJElement(container, 'program');
+      const ast = program[0].Program;
+      console.log('ast', ast);
+      this.ast = ast;
 
-  const json = JSON.stringify(program, null, 2);
-  // console.log(json);
+      return ast;
+    },
+    getJSON () {
+      const ast = this.ast || this.getAST();
+      const json = JSON.stringify(ast, null, 2);
+      // console.log(json);
 
-  const code = escodegen.generate(program, {
-    // Need for `raw`
-    // parse: true
-  });
-  console.log('code', code);
+      return json;
+    },
+    getCode () {
+      const ast = this.ast || this.getAST();
+      const code = escodegen.generate(ast, {
+        // Need for `raw`
+        // parse: true
+      });
+      console.log('code', code);
 
-  const cols = 70;
-  const rows = 20;
-
-  const taHTML = document.createElement('textarea');
-  taHTML.setAttribute('cols', cols);
-  taHTML.setAttribute('rows', rows);
-  taHTML.textContent = document.querySelector('j-program').outerHTML;
-  document.body.append(taHTML);
-
-  const ta = document.createElement('textarea');
-  ta.setAttribute('cols', cols);
-  ta.setAttribute('rows', rows);
-  ta.textContent = json;
-  document.body.append(ta);
-
-  const taCode = document.createElement('textarea');
-  taCode.setAttribute('cols', cols);
-  taCode.setAttribute('rows', rows);
-  taCode.textContent = code;
-  document.body.append(taCode);
-
-  const evalButton = document.createElement('button');
-  evalButton.textContent = 'Eval()';
-  evalButton.addEventListener('click', () => {
-    eval(code);
-  });
-  document.body.append(evalButton);
-})();
+      return code;
+    }
+  };
+}

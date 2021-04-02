@@ -13,7 +13,7 @@
   "scripts": {
     "eslint": "eslint --ext=jd,md,html",
     "lint": "npm run eslint",
-    "open": "open-cli http://localhost:8086 && npm start",
+    "open": "open-cli http://localhost:8086/demo.html && npm start",
     "start": "static -p 8086",
     "rollup": "rollup -c",
     "mocha": "mocha",
