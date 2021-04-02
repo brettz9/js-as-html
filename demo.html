@@ -14,51 +14,51 @@
 
      <!-- (AST-inspired) js-as-HTML -->
      <j-program>
-       <jk-body>
+       <jp-body>
          <j-if-statement>
-           <jk-test>
+           <jp-test>
              <j-binary-expression operator="%">
-               <jk-left>
+               <jp-left>
                  <j-call-expression>
-                   <jk-callee>
+                   <jp-callee>
                      <j-member-expression>
-                       <jk-object>
+                       <jp-object>
                          <j-identifier name="Date"></j-identifier>
-                       </jk-object>
-                       <jk-property>
+                       </jp-object>
+                       <jp-property>
                          <j-identifier name="now"></j-identifier>
-                       </jk-property>
+                       </jp-property>
                      </j-member-expression>
-                   </jk-callee>
-                   <jk-arguments></jk-arguments>
+                   </jp-callee>
+                   <jp-arguments></jp-arguments>
                  </j-call-expression>
-               </jk-left>
-               <jk-right>
+               </jp-left>
+               <jp-right>
                  <j-literal value="2"></j-literal>
-               </jk-right>
+               </jp-right>
              </j-binary-expression>
-           </jk-test>
-           <jk-consequent>
+           </jp-test>
+           <jp-consequent>
              <j-block-statement>
-               <jk-body>
+               <jp-body>
                  <j-expression-statement>
-                   <jk-expression>
+                   <jp-expression>
                      <j-call-expression>
-                       <jk-callee>
+                       <jp-callee>
                          <j-identifier name="alert"></j-identifier>
-                       </jk-callee>
-                       <jk-arguments>
+                       </jp-callee>
+                       <jp-arguments>
                          <j-literal value="&quot;hello&quot;"></j-literal>
-                       </jk-arguments>
+                       </jp-arguments>
                      </j-call-expression>
-                   </jk-expression>
+                   </jp-expression>
                  </j-expression-statement>
-               </jk-body>
+               </jp-body>
              </j-block-statement>
-           </jk-consequent>
-           <jk-alternate></jk-alternate>
+           </jp-consequent>
+           <jp-alternate></jp-alternate>
          </j-if-statement>
-       </jk-body>
+       </jp-body>
      </j-program>
 
    </body>

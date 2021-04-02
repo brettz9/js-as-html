@@ -1,7 +1,7 @@
 import escodegen from './vendor/escodegen.js';
 
 const VISITOR_KEY_PREFIX = 'j';
-const AST_PROPERTY_PREFIX = 'jk';
+const AST_PROPERTY_PREFIX = 'jp';
 
 let DEBUG = 0;
 export function debug (val) {
