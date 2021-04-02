@@ -1,5 +1,5 @@
 {
-  "name": "js-in-html",
+  "name": "js-as-html",
   "version": "0.1.0",
   "author": "Brett Zamir <brettz9@yahoo.com>",
   "contributors": [],
@@ -21,12 +21,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brettz9/js-in-html.git"
+    "url": "git+https://github.com/brettz9/js-as-html.git"
   },
   "bugs": {
-    "url": "https://github.com/brettz9/js-in-html/issues"
+    "url": "https://github.com/brettz9/js-as-html/issues"
   },
-  "homepage": "https://github.com/brettz9/js-in-html",
+  "homepage": "https://github.com/brettz9/js-as-html",
   "engines": {
     "node": ">=10.0.0"
   },
