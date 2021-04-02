@@ -138,7 +138,6 @@ export async function setup ({
 
       const key = getKeyForElement(tag, VISITOR_KEY_PREFIX);
 
-      // Todo: Specify or detect type, e.g., to parse as float?
       const map = new Map([
         ['Identifier', {allowableAttributes: ['name']}],
         ['Literal', {allowableAttributes: ['value'], json: ['value']}],
